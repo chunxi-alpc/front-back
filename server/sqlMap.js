@@ -6,7 +6,8 @@ var sqlMap = {
         add: 'insert into `user`(`username`, `userpsw`) values (?,?);'
     },
     news: {
-        add: 'INSERT INTO `news`(`title`, `link`, `origin`, `content`, `theme`) values (?,?,?,?,?);'
+        add: 'INSERT INTO `news`(`title`, `link`, `origin`, `content`, `theme`) values (?,?,?,?,?);',
+        all: 'select `title`,`theme`,`origin`,`content` from `news`;'
     }
 
 

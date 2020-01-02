@@ -28,17 +28,11 @@ router.post('/login', (req, res) => {
     conn.query(sql, [params.username], function(err, result) {
         if (err) {
             console.log(err);
+            return res.redirect('/');
         }
         if (result) {
             jsonWrite(res, result);
-            for (var i = 0; i < result.length; i++) {
-                console.log("请求回来！", result[i])
-                console.log("请求结果！", typeof result[i], result[i].userpsw);
-                if (result[i].userpsw == params.userpsw) {
-                    res.send("返回回来了！");
-                }
-            }
-            res.end('is over');
+            return res.send("返回回来了！");
         }
     })
 });
@@ -51,18 +45,14 @@ router.post('/addUser', (req, res) => {
     conn.query(sql, [params.username, params.userpsw], function(err, result) {
         if (err) {
             console.log(err);
+            return res.redirect('/')
         }
         if (result) {
             jsonWrite(res, result);
-            for (var i = 0; i < result.length; i++) {
-                console.log("请求回来！", result[i])
-                console.log("请求结果！", typeof result[i], result[i].userpsw);
-                if (result[i].userpsw == params.userpsw) {
-                    res.send("返回回来了！");
-                }
-            }
-            res.end('is over');
+            return res.send("返回回来了！");
         }
+
+
     })
 });
 
@@ -75,15 +65,33 @@ router.post('/addnews', (req, res) => {
     conn.query(sql, [params.news.title, params.news.link, params.news.origin, params.news.content, params.news.theme], function(err, result) {
         if (err) {
             console.log(err);
+            return res.redirect('/')
         }
         if (result) {
             jsonWrite(res, result);
-            for (var i = 0; i < result.length; i++) {
-                console.log("请求回来！", result[i])
-                res.send("返回回来了！");
-            }
-            res.end('is over');
+            return res.send("返回回来了！");
+        }
+
+    })
+
+});
+
+
+// newslist
+router.post('/all', (req, res) => {
+    var sql = $sql.news.all;
+    //var params = req.body;
+    console.log("sql", sql);
+    conn.query(sql, [], function(err, result) {
+        if (err) {
+            console.log(err);
+            return res.redirect('/')
+        }
+        if (result) {
+            jsonWrite(res, result);
+            return res.send(result);
         }
     })
 });
+
 module.exports = router;

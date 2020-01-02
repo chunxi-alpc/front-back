@@ -1,6 +1,13 @@
 <template>
   <div>
-    <Row>
+    <a href="javascript:void(0)" v-on:click="add">||&nbsp;&nbsp;&nbsp;增&nbsp;&nbsp;&nbsp;|</a>
+    <a href="javascript:void(0)" v-on:click="del">|&nbsp;&nbsp;&nbsp;删&nbsp;&nbsp;&nbsp;|</a>
+    <a href="javascript:void(0)" v-on:click="all">|&nbsp;&nbsp;&nbsp;查&nbsp;&nbsp;&nbsp;|</a>
+    <a href="javascript:void(0)" v-on:click="modify">|&nbsp;&nbsp;&nbsp;改&nbsp;&nbsp;&nbsp;||</a>
+    <div id="all">
+      <Table :columns="Col" :data="tempData"></Table>
+    </div>
+    <Row id="add">
       <Col span="15">
         <Form :label-width="80" :model="formItem">
           <FormItem label="新闻链接">
@@ -38,32 +45,62 @@ export default {
         theme: '',
         origin: '',
       },
-      editor: null
+      editor: null,
+      tempData: [],
+      Col: [
+        {
+          title: '新闻名称',
+          key: 'title'
+        },
+        {
+          title: '新闻主题',
+          key: 'theme'
+        },
+        {
+          title: '新闻来源',
+          key: 'origin'
+        },
+        {
+          title: '新闻内容',
+          key: 'content'
+        },
+      ],
+      Data: []
     }
+
   },
-  beforeCreate () {
-  },
-  created () {
-    //this.getCat();
-  },
-  beforeMount () {
+  watch: {
+    data (val) {
+      this.tempData = util.deepCopy(val);
+    },
   },
   mounted () {
-  },
-  beforeUpdate () {
-  },
-  updated () {
-  },
-  activited () {
-  },
-  deactivated () {
-  },
-  beforeDestroy () {
-  },
-  destroyed () {
-    //this.editor.destory();
+    document.getElementById("add").style.display = "none";
+    document.getElementById("all").style.display = "none";
   },
   methods: {
+    add: function () {
+      document.getElementById("add").style.display = "block";
+      document.getElementById("all").style.display = "none";
+    },
+    all: function () {
+      document.getElementById("all").style.display = "block";
+      document.getElementById("add").style.display = "none";
+      var url = "/api/all";
+      this.$http.post(url).then(function (data) {
+        var content = data.body;
+        if (content.length != 0) {
+          this.Data = content.lists;
+          alert("获取成功");
+          console.log("请求成功！ ", this.Data);
+
+        } else {
+          alert("获取失败");
+        }
+      }, function (response) {
+        console.log(response);
+      })
+    },
     submit: function () {
       console.log(this.loginData);
       var url = "/api/addnews";
@@ -74,19 +111,16 @@ export default {
         console.log("请求成功！ ", data.body);
         var content = data.body;
         if (content.length != 0) {
-          alert("登录成功！");
+          alert("添加成功！");
           this.$router.push({ name: '/addNews', params: { id: content[0].id } });
         } else {
-          alert("账户密码错误！");
+          alert("失败");
         }
       }, function (response) {
         console.log(response);
       })
     }
-  },
-  filters: {},
-  computed: {},
-  watch: {}
+  }
 }
 </script>
 
