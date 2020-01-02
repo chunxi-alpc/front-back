@@ -70,8 +70,6 @@ export default {
         this.regData.tpsw = "";
       } else {
         var url = "/api/addUser";
-
-
         this.$http.post(url, {
           username: this.regData.username,
           userpsw: this.regData.psw

@@ -65,4 +65,25 @@ router.post('/addUser', (req, res) => {
         }
     })
 });
+
+// addnews
+router.post('/addnews', (req, res) => {
+    var sql = $sql.news.add;
+    var params = req.body;
+    console.log("sql", sql);
+    console.log("params", params);
+    conn.query(sql, [params.news.title, params.news.link, params.news.origin, params.news.content, params.news.theme], function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            jsonWrite(res, result);
+            for (var i = 0; i < result.length; i++) {
+                console.log("请求回来！", result[i])
+                res.send("返回回来了！");
+            }
+            res.end('is over');
+        }
+    })
+});
 module.exports = router;

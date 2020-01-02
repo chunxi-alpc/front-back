@@ -64,8 +64,25 @@ export default {
     //this.editor.destory();
   },
   methods: {
-    submit () {
-    },
+    submit: function () {
+      console.log(this.loginData);
+      var url = "/api/addnews";
+      this.$http.post(url, {
+        news: this.formItem,
+        user: this.editor
+      }, {}).then(function (data) {
+        console.log("请求成功！ ", data.body);
+        var content = data.body;
+        if (content.length != 0) {
+          alert("登录成功！");
+          this.$router.push({ name: '/addNews', params: { id: content[0].id } });
+        } else {
+          alert("账户密码错误！");
+        }
+      }, function (response) {
+        console.log(response);
+      })
+    }
   },
   filters: {},
   computed: {},
