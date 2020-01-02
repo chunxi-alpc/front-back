@@ -52,7 +52,7 @@ export default {
         var content = data.body;
         if (content.length != 0) {
           alert("登录成功！");
-          //this.$router.push({ name: './pages/addNews', params: { id: content[0].id } });
+          this.$router.push({ name: '/addNews', params: { id: content[0].id } });
         } else {
           alert("账户密码错误！");
         }
